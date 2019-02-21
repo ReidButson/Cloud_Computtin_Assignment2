@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import KDance from
 
 class App extends Component {
   constructor(props) {
@@ -19,7 +20,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <img src={require("./images/keywii.gif")} style={{width: window.innerWidth}}/>
+        <img
+          src={require("./images/danceboi.gif")}
+          style={{width: window.innerWidth}}
+          onClick={{}}/>
       </div>
     );
   }
