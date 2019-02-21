@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import KDance from
 
 class App extends Component {
   constructor(props) {
