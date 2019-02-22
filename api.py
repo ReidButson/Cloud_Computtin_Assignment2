@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from pathlib import Path
 import io
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./secrets/ccpk.json"
@@ -13,7 +14,7 @@ client = vision.ImageAnnotatorClient()
 # The name of the image file to annotate
 file_name = os.path.join(
     os.path.dirname(__file__),
-    './images/SkullD.png')
+    './static/SkullD.png')
 
 # Loads the image into memory
 with io.open(file_name, 'rb') as image_file:
@@ -29,14 +30,19 @@ print('Labels:')
 for label in labels:
     print(label.description)
 
-
 app = Flask(__name__)
 
+skull = "./static/SkullD.png"
+try:
+    Path(Path.cwd().joinpath("new")).mkdir(parents=True, exist_ok=True)
+    print('yay')
+except:
+    print('damn')
 
+print(skull)
 @app.route("/")
-@app.route("/index.html")
 def hello():
-    return "Hello World"
+    return render_template('index.html', title="TESTING", image_f=skull)
 
 if __name__ == "__main__":
     app.run()
