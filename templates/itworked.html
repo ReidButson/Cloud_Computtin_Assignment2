@@ -5,8 +5,14 @@
     <title>Yay</title>
 </head>
 <body>
-    <h1>IT WORKED!</h1>
-    <p> {{ imsrc }} </p>
-    <img src="{{ imsrc }}" alt="-- Image Should Be Here --">
+    <h1>{{ best_guess }}</h1>
+    <img src="{{ imsrc }}" alt="-- Image Should Be Here --" style="width:200px">
+
+    {% for result in results %}
+    <div>
+        <h2> {{ result.name }}</h2>
+        <a href="{{ result.url }} "> {{ result.url }} </a>
+    </div>
+    {% endfor %}
 </body>
 </html>

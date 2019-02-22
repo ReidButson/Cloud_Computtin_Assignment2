@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 from pathlib import Path
 import io
 import os
+import itunes
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./secrets/ccpk.json"
 
 # Imports the Google Cloud client library
@@ -40,15 +42,32 @@ def upload_image():
     image = types.Image(content=content)
 
     # Performs label detection on the image file
-    response = client.label_detection(image=image)
-    labels = response.label_annotations
+    response = client.web_detection(image=image)
+    annotations = response.web_detection
 
-    print('Labels:')
-    for label in labels:
-        print(label.description)
+    best_guess = "Best Guess"
+    if annotations.best_guess_labels:
+        for guess in annotations.best_guess_labels:
+            best_guess = guess.label
+
+
+    results = []
+    if annotations.web_entities:
+
+        for entity in annotations.web_entities:
+            print('\n\tScore      : {}'.format(entity.score))
+            print(u'\tDescription: {}'.format(entity.description))
+            top = itunes.top_result(entity.description)
+            if top:
+                results.append(top)
 
     relative_path = "/static/uploads/{}".format(filename)
-    return render_template("itworked.html", imsrc=relative_path)
+
+
+    return render_template("itworked.html",
+                           best_guess=best_guess,
+                           imsrc=relative_path,
+                           results=results)
 
 if __name__ == "__main__":
     app.run()
