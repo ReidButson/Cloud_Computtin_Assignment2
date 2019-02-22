@@ -8,11 +8,23 @@
     <h1>{{ best_guess }}</h1>
     <img src="{{ imsrc }}" alt="-- Image Should Be Here --" style="width:200px">
 
+    <div id="pic_toggle"></div>
+
     {% for result in results %}
     <div>
         <h2> {{ result.name }}</h2>
         <a href="{{ result.url }} "> {{ result.url }} </a>
     </div>
     {% endfor %}
+
+
+
+    <!-- Load React. -->
+  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- Load our React component. -->
+  <script id="pic_script" src="/static/js/toggle_pic.js" data-word="oh no"></script>
 </body>
 </html>
