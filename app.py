@@ -4,12 +4,11 @@ import io
 import os
 import itunes
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./secrets/ccpk.json"
-
 # Imports the Google Cloud client library
 from google.cloud import vision
 from google.cloud.vision import types
 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./secrets/ccpk.json"
 
 app = Flask(__name__)
 
@@ -53,19 +52,18 @@ def upload_image():
 
     results = []
     if annotations.web_entities:
-
         for entity in annotations.web_entities:
-            print('\n\tScore      : {}'.format(entity.score))
-            print(u'\tDescription: {}'.format(entity.description))
             top = itunes.top_result(entity.description)
             if top:
-                results.append(top)
+                top['tag'] = entity.description
+                if top not in results:
+                    results.append(top)
 
     relative_path = "/static/uploads/{}".format(filename)
 
 
     return render_template("itworked.html",
-                           best_guess=best_guess,
+                           best_guess=best_guess.upper(),
                            imsrc=relative_path,
                            results=results)
 

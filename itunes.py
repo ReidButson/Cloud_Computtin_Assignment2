@@ -14,7 +14,7 @@ def top_result(query):
     if not 'artistViewUrl' in result.keys():
         return False
 
-    return {"name": result['artistName'], "url": result['artistViewUrl']}
+    return {"name": result['artistName'], "url": result['artistViewUrl'], "image": result['artworkUrl100']}
 
 def results(query, limit):
     response = requests.get('https://itunes.apple.com/search?term={}&limit={}'.format(query, limit))

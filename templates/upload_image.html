@@ -4,10 +4,32 @@
         <meta charset="UTF-8">
         <title>Upload Image</title>
     </head>
+    <script>
+        var loadFile = function(event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+    <style>
+        .itune_div {
+            text-align: center;
+            width: 50%;
+            margin: auto;
+            box-shadow: 0px 2px 8px 0 rgba(0,0,0,0.4);
+        }
+        .itune_div > img {
+            width: 80%;
+        }
+
+    </style>
     <body>
-        <form id="image-upload" action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*">
-            <input type="submit" value="Upload">
-        </form>
+        <div class="itune_div">
+            <h1>Find That Artist</h1>
+            <img src="/static/images/placeholder.png" id="output"/>
+            <form id="image-upload" action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" onchange="loadFile(event)">
+                <input type="submit" value="Upload">
+            </form>
+        </div>
     </body>
 </html>

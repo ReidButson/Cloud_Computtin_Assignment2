@@ -4,27 +4,48 @@
     <meta charset="UTF-8">
     <title>Yay</title>
 </head>
-<body>
-    <h1>{{ best_guess }}</h1>
-    <img src="{{ imsrc }}" alt="-- Image Should Be Here --" style="width:200px">
+<style>
+    .title_card {
+        text-align: center;
+        margin: auto;
+    }
 
-    <div id="pic_toggle"></div>
+    .item1 { grid-area: image; }
+    .item2 { grid-area: name; }
+    .item3 { grid-area: url; }
+
+    .card {
+        width: 60%;
+        display: grid;
+        grid-template-areas:
+            'image name name name'
+            'image url url url';
+        grid-gap: 10px;
+        background-color: #ffff;
+        margin: 8px auto 0 auto;
+        padding: 4px;
+        box-shadow: -2px 2px 8px 0 rgba(0,0,0,0.4);
+    }
+</style>
+<body>
+    <div class="title_card">
+        <h2>Google's Best Guess:</h2>
+        <h1>{{ best_guess }}</h1>
+        <img src="{{ imsrc }}"
+          alt="-- Image Should Be Here --"
+          style="width:200px">
+    </div>
+
+    <div id="pic_toggle" data-word="oh yes"></div>
 
     {% for result in results %}
-    <div>
-        <h2> {{ result.name }}</h2>
-        <a href="{{ result.url }} "> {{ result.url }} </a>
+    <p style="text-align: center"> Because Google guessed "{{ result.tag }}" iTunes suggests: </p>
+    <div class="card">
+        <div class="item1"><img  src="{{ result.image }}" alt="Should be image"></div>
+        <div class="item2"><h3> {{ result.name }}</h3></div>
+        <div class="item3"><a href="{{ result.url }} "><img src="/static/images/get_on_itunes.svg"/></a></div>
     </div>
     {% endfor %}
 
-
-
-    <!-- Load React. -->
-  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-
-  <!-- Load our React component. -->
-  <script id="pic_script" src="/static/js/toggle_pic.js" data-word="oh no"></script>
 </body>
 </html>
