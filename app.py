@@ -3,6 +3,8 @@ from pathlib import Path
 import io
 import os
 import itunes
+from mailjet_rest import Client
+import wikipedia
 
 # Imports the Google Cloud client library
 from google.cloud import vision
@@ -66,6 +68,50 @@ def upload_image():
                            best_guess=best_guess.upper(),
                            imsrc=relative_path,
                            results=results)
+
+@app.route("/send_knowledge", methods = ['POST'])
+def send_knowledge():
+    subject = wikipedia.random(1)
+    summary = wikipedia.summary(subject)
+    email = request.form['email']
+    name = request.form['name']
+    body = "A brief summary of: {}\n{}".format(subject, summary)
+    bodyhtml = "<div><h2>A brief summary of: {}</h2><br /><p>{}</p></div><br /><br /><p>Your friend {} thought you should know<p>".format(
+        subject, summary, name)
+
+    api = '1b3a86b86c9b6d15fd254f2e5edcfe09'
+    secret = '6fa9ad8d7d8392adca139d7c587a6a3a'
+
+    mailjet = Client(auth=(api, secret), version='v3.1')
+
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": "randominfoyounowknow@gmail.com",
+                    "Name": "Random Info"
+                },
+                "To": [
+                    {
+                        "Email": email,
+                        "Name": "you"
+                    }
+                ],
+                "Subject": "A little info about: {}".format(subject),
+                "TextPart": body,
+                "HTMLPart": bodyhtml
+            }
+        ]
+    }
+    result = mailjet.send.create(data=data)
+    status = result.status_code
+
+    if status == 200:
+        return render_template("knowledgesent.html",
+                               subject=subject,
+                               body=body)
+    else:
+        return render_template("error.html", status=status)
 
 if __name__ == "__main__":
     app.run()
