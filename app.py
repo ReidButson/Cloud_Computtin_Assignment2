@@ -5,12 +5,24 @@ import os
 import itunes
 from mailjet_rest import Client
 import wikipedia
+import pyrebase
 
 # Imports the Google Cloud client library
 from google.cloud import vision
 from google.cloud.vision import types
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./secrets/ccpk.json"
+
+config = {
+    "apiKey": "AIzaSyBRPX7V7XORhX7oip-mcbJLMzyUfyA-ciQ",
+    "authDomain": "level-abode-232421.firebaseapp.com",
+    "databaseURL": "https://level-abode-232421.firebaseio.com",
+    "projectId": "level-abode-232421",
+    "storageBucket": "level-abode-232421.appspot.com",
+    "messagingSenderId": "461402881664"
+}
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
 
 app = Flask(__name__)
 
@@ -25,12 +37,12 @@ def index():
 def upload_image():
     Path(Path.cwd().joinpath("static", "uploads")).mkdir(parents=True, exist_ok=True)
 
-    file = request.files.get("file")
+    file = request.files["file"]
     filename = file.filename
     destination = Path.cwd().joinpath("static", "uploads", filename)
     file.save(str(destination))
-
-
+    storage.child("images/{}".format(filename)).put(str(destination))
+    url = storage.child("images/{}".format(filename)).get_url(None)
 
     # Instantiates a client
     client = vision.ImageAnnotatorClient()
@@ -63,10 +75,12 @@ def upload_image():
 
     relative_path = "/static/uploads/{}".format(filename)
 
+    os.remove(str(destination))
+
 
     return render_template("itworked.html",
                            best_guess=best_guess.upper(),
-                           imsrc=relative_path,
+                           imsrc=url,
                            results=results)
 
 @app.route("/send_knowledge", methods = ['POST'])
