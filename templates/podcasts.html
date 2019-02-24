@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .podcard {
+        display: inline-block;
+        padding: 8px;
+        margin: 8px auto 8px 8px;
+        box-shadow: 0px 2px 8px 0 rgba(0,0,0,0.4);
+    }
+</style>
+<body>
+    {% for episode in episodes %}
+    <div class="podcard">
+        <p>{{ episode.name }}</p>
+        <audio controls>
+         <source src="{{ episode.url}}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    {% endfor %}
+</body>
+</html>

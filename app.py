@@ -31,7 +31,7 @@ skull = "./static/SkullD.png"
 print(skull)
 @app.route("/")
 def index():
-    return render_template("upload_image.html")
+    return render_template("index.html")
 
 @app.route("/upload_image", methods = ['POST'])
 def upload_image():
@@ -126,6 +126,13 @@ def send_knowledge():
                                body=body)
     else:
         return render_template("error.html", status=status)
+
+@app.route("/podcast", methods=['post'])
+def podcast():
+    podname = request.form['podname']
+
+    episodes = itunes.podcasts(podname)
+    return render_template("podcasts.html", episodes=episodes)
 
 if __name__ == "__main__":
     app.run()
