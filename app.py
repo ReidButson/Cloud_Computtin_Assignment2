@@ -6,6 +6,7 @@ import itunes
 from mailjet_rest import Client
 import wikipedia
 import pyrebase
+import requests
 
 # Imports the Google Cloud client library
 from google.cloud import vision
@@ -133,6 +134,14 @@ def podcast():
 
     episodes = itunes.podcasts(podname)
     return render_template("podcasts.html", episodes=episodes)
+
+@app.route("/cat_facts", methods=['POST'])
+def cat_facts():
+    response = requests.get('https://cat-fact.herokuapp.com/facts/random?animal=cat&amount=1')
+    json_response = response.json()
+    fact= json_response['text']
+
+    return render_template("catfact.html", fact=fact)
 
 if __name__ == "__main__":
     app.run()

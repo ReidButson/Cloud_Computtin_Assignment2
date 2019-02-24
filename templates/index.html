@@ -11,58 +11,69 @@
         };
     </script>
     <style>
+        .grid {
+            display: grid;
+            grid-template-columns: auto auto;
+            padding: 10px;
+        }
         .random_div {
             text-align: center;
-            width: 50%;
-            margin: auto;
+            margin: 8px;
             box-shadow: 0px 2px 8px 0 rgba(0,0,0,0.4);
-        }
-        .random_div > form {
-            padding: 8px;
         }
         .itune_div {
             text-align: center;
-            width: 50%;
-            margin: auto;
+            margin: 8px;
             box-shadow: 0px 2px 8px 0 rgba(0,0,0,0.4);
         }
         .itune_div > img {
-            width: 80%;
+            width: 25%;
         }
 
     </style>
     <body>
-        <div class="itune_div">
-            <h1>Find That Artist</h1>
-            <img src="/static/images/placeholder.png" id="output"/>
-            <form id="image-upload" action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept="image/*" onchange="loadFile(event)">
-                <input type="submit" value="Upload">
-            </form>
-        </div>
-        <div class="random_div">
-            <h1>Inform a Friend!</h1>
-            <form id="send-knowledge" action="{{ url_for('send_knowledge') }}" method="post">
-                <label>Your Name:</label>
-                <br />
-                <input type="text" name="name">
-                <br />
-                <label>Your Friend's email</label>
-                <br />
-                <input type="text" name="email">
-                <br />
-                <input type="submit" value="Send the Knowledge!">
-            </form>
-        </div>
-        <div class="random_div">
-            <h1>Find a podcast</h1>
-            <form id="get-podcast" action="{{ url_for('podcast') }}" method="post">
-                <label>Podcast Name:</label>
-                <br />
-                <input type="text" name="podname">
-                <br />
-                <input type="submit" value="Give me the episodes">
-            </form>
+        <div class="grid">
+            <div class="itune_div" style="background: #ff0000">
+                <h1>Find some Tunes</h1>
+                <p>Enter an image and let Google and iTunes determine what music it relates to</p>
+                <img src="/static/images/placeholder.png" id="output"/>
+                <form id="image-upload" action="{{ url_for('upload_image') }}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept="image/*" onchange="loadFile(event)">
+                    <input type="submit" value="Upload">
+                </form>
+            </div>
+            <div class="random_div" style="background: #00ff00">
+                <h1>Inform a Friend!</h1>
+                <p>Send a friend some much required knowledge through the power of Wikipedia and email</p>
+                <form id="send-knowledge" action="{{ url_for('send_knowledge') }}" method="post">
+                    <label>Your Name:</label>
+                    <br />
+                    <input type="text" name="name">
+                    <br />
+                    <label>Your Friend's email</label>
+                    <br />
+                    <input type="text" name="email">
+                    <br />
+                    <input type="submit" value="Send the Knowledge!">
+                </form>
+            </div>
+            <div class="random_div" style="background: #ffff00">
+                <h1>Find a Podcast</h1>
+                <p>Enter a word, get episodes of a podcast</p>
+                <form id="get-podcast" action="{{ url_for('podcast') }}" method="post">
+                    <label>Podcast Name:</label>
+                    <input type="text" name="podname">
+                    <input type="submit" value="Give me the episodes">
+                </form>
+            </div>
+            <div class="random_div" style="background: #ff00ff">
+                <h1>Get a Cat Fact</h1>
+                <p>Get a cat fact</p>
+                <form id="get-cat-facts" action="{{ url_for('cat_facts') }}" method="post">
+                    <label>Cat Fact</label>
+                    <input type="submit" value="Fact me up Cat Daddy!">
+                </form>
+            </div>
         </div>
     </body>
 </html>
